@@ -13,21 +13,10 @@ int hexToInt(char hex) {
     return -1;
 }
 
-void BinaryToHex(const vector<int>& binaryVector) {
-    cout << "0x";
-    for (size_t i = 0; i < binaryVector.size(); i += 4) {
-        int val = 0;
-        for (int j = 0; j < 4; j++) {
-            if ((i + j) < binaryVector.size()) {
-                val = (val << 1) | binaryVector[i + j];
-            }
-        }
-        cout << hex << uppercase << val;
-    }
-    cout << endl;
-}
-
 vector<int> hexToBinary(string hexText, int bits){
+    if (hexText.length() >= 2 && hexText[0] == '0' && (hexText[1] == 'x' || hexText[1] == 'X')){
+        hexText = hexText.substr(2);
+    };
     vector<int> binaryVector(bits); //allocate "bits" of vector space
 
     for (size_t i=0; i< hexText.length(); i++ ) {
@@ -43,4 +32,21 @@ vector<int> hexToBinary(string hexText, int bits){
         }
     }
     return binaryVector;
+}
+
+string BinaryToHex(const vector<int>& binaryVector) {
+    string hexResult = "0x";
+    for (size_t i = 0; i < binaryVector.size(); i += 4) {
+        int val = 0;
+        for (int j = 0; j < 4; j++) {
+            if ((i + j) < binaryVector.size()) {
+                val = (val << 1) | binaryVector[i + j];
+            }
+        }
+        if (val < 10)
+            hexResult += char('0' + val);
+        else
+            hexResult += char('A' + (val - 10));
+    }
+    return hexResult;
 }
